@@ -137,21 +137,30 @@ function App() {
                 placeholder="Select price range"
                 defaultValue={`${data.priceRange.min.toString()}-${data.priceRange.max.toString()}`}
                 onChange={(option) => {
+                  // @ts-ignore
                   console.log(parseInt(option?.value?.split("-")[0]));
                   setData({
                     ...data,
                     priceRange: {
+                      // @ts-ignore
                       min: parseInt(option?.value?.split("-")[0] || "0"),
+                      // @ts-ignore
                       max: parseInt(option?.value?.split("-")[1] || "10"),
                     },
                   });
                 }}
                 options={[
+                  // @ts-ignore
                   { value: "0-10", label: "0-10" },
+                  // @ts-ignore
                   { value: "10-20", label: "10-20" },
+                  // @ts-ignore
                   { value: "20-30", label: "20-30" },
+                  // @ts-ignore
                   { value: "30-40", label: "30-40" },
+                  // @ts-ignore
                   { value: "40-50", label: "40-50" },
+                  // @ts-ignore
                   { value: "50-80", label: "50-80" },
                 ]}
                 name="price-range"
@@ -164,6 +173,7 @@ function App() {
               placeholder="Select currency"
               value={data.currency}
               onChange={(val) => setData({ ...data, currency: val || "EUR" })}
+              // @ts-ignore
               options={[{ value: "EUR", label: "EUR" }]}
               name="currency"
               className="select"
