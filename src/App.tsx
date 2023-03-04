@@ -122,7 +122,7 @@ function App() {
 
                 return (
                   <button
-                    data-active={minutes === data.numPeople}
+                    data-active={minutes === data.minutes}
                     key={minutes * 5}
                     onClick={() => setData({ ...data, minutes })}
                   >
