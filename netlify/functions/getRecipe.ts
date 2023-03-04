@@ -25,10 +25,11 @@ function generatePromt(data: Data): string {
 
   The recipe should be for ${data.numPeople} people.
 
-  The recipe should take around ${data.minutes} minutes to make, 
-  and have a price range between ${data.priceRange.min} and 
-  ${data.priceRange.max} ${data.currency}. 
+  The recipe should be ${data.style} style.
 
+  The recipe should take around ${data.minutes} minutes to make.
+
+  The recipe should be of difficulty "${data.difficulty}"
 
   ${data.ingredients.length ? generateIngredientPrompt(data.ingredients) : ""}
   

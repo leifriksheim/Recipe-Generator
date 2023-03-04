@@ -3,6 +3,7 @@ import { Data } from "../types";
 import ingredients from "./data/ingredients";
 import Select, { MultiValue } from "react-select";
 import "./App.css";
+import styles from "./data/styles";
 
 async function fetchRecipe(data: Data) {
   const response = await fetch("/.netlify/functions/getRecipe", {
@@ -26,11 +27,8 @@ function App() {
     minutes: 30,
     numPeople: 1,
     type: "lunch",
-    currency: "EUR",
-    priceRange: {
-      min: 0,
-      max: 10,
-    },
+    style: "any",
+    difficulty: "easy",
     ingredients: [],
   });
 
@@ -42,7 +40,7 @@ function App() {
       const res = await fetchRecipe(data);
       setRecipe(res);
     } catch (e) {
-      setRecipe("Failed to fetch recipe");
+      setRecipe("The AI is exhausted, let it chill a bit");
     } finally {
       setLoading(false);
     }
@@ -98,7 +96,46 @@ function App() {
               classNamePrefix="select"
             />
 
-            <p>How many people are you making food for?</p>
+            <p className="label">What type of food do you want?</p>
+
+            <div className="tab-options">
+              {styles.map((style) => {
+                return (
+                  <button
+                    data-active={style === data.style}
+                    key={style}
+                    onClick={() => setData({ ...data, style: style })}
+                  >
+                    {style}
+                  </button>
+                );
+              })}
+            </div>
+
+            <p className="label">What type of meal is this?</p>
+
+            <div className="tab-options">
+              <button
+                data-active={data.type === "breakfast"}
+                onClick={() => setData({ ...data, type: "breakfast" })}
+              >
+                Breakfast
+              </button>
+              <button
+                data-active={data.type === "lunch"}
+                onClick={() => setData({ ...data, type: "lunch" })}
+              >
+                Lunch
+              </button>
+              <button
+                data-active={data.type === "dinner"}
+                onClick={() => setData({ ...data, type: "dinner" })}
+              >
+                Dinner
+              </button>
+            </div>
+
+            <p className="label">How many people are you making food for?</p>
 
             <div className="tab-options">
               {[...Array(5).keys()].map((num) => {
@@ -114,7 +151,7 @@ function App() {
               })}
             </div>
 
-            <p>How many minutes should it take?</p>
+            <p className="label">How many minutes should it take?</p>
 
             <div className="tab-options">
               {[...Array(6).keys()].map((num) => {
@@ -132,53 +169,28 @@ function App() {
               })}
             </div>
 
-            <div className="price-range-options">
-              <Select
-                placeholder="Select price range"
-                defaultValue={`${data.priceRange.min.toString()}-${data.priceRange.max.toString()}`}
-                onChange={(option) => {
-                  // @ts-ignore
-                  console.log(parseInt(option?.value?.split("-")[0]));
-                  setData({
-                    ...data,
-                    priceRange: {
-                      // @ts-ignore
-                      min: parseInt(option?.value?.split("-")[0] || "0"),
-                      // @ts-ignore
-                      max: parseInt(option?.value?.split("-")[1] || "10"),
-                    },
-                  });
-                }}
-                options={[
-                  // @ts-ignore
-                  { value: "0-10", label: "0-10" },
-                  // @ts-ignore
-                  { value: "10-20", label: "10-20" },
-                  // @ts-ignore
-                  { value: "20-30", label: "20-30" },
-                  // @ts-ignore
-                  { value: "30-40", label: "30-40" },
-                  // @ts-ignore
-                  { value: "40-50", label: "40-50" },
-                  // @ts-ignore
-                  { value: "50-80", label: "50-80" },
-                ]}
-                name="price-range"
-                className="select"
-                classNamePrefix="select"
-              />
-            </div>
+            <p className="label">How difficult should it be?</p>
 
-            <Select
-              placeholder="Select currency"
-              value={data.currency}
-              onChange={(val) => setData({ ...data, currency: val || "EUR" })}
-              // @ts-ignore
-              options={[{ value: "EUR", label: "EUR" }]}
-              name="currency"
-              className="select"
-              classNamePrefix="select"
-            />
+            <div className="tab-options">
+              <button
+                data-active={data.difficulty === "easy"}
+                onClick={() => setData({ ...data, difficulty: "easy" })}
+              >
+                Easy
+              </button>
+              <button
+                data-active={data.difficulty === "medium"}
+                onClick={() => setData({ ...data, difficulty: "medium" })}
+              >
+                Medium
+              </button>
+              <button
+                data-active={data.difficulty === "advanced"}
+                onClick={() => setData({ ...data, difficulty: "advanced" })}
+              >
+                Advanced
+              </button>
+            </div>
 
             <button className="submit" onClick={getRecipe}>
               {isLoading ? "Generating Recipe..." : "Generate Recipe"}
