@@ -32,24 +32,26 @@
   margin-top: 2rem;
 }
 
-.people-options {
+.tab-options {
   display: flex;
   gap: 1rem;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
-.people-options button {
+.tab-options button {
   width: 100%;
   background: var(--color-background);
   border: 1px solid var(--color-text);
   color: var(--color-text);
 }
 
-.people-options button:hover {
+.tab-options button:hover {
   border: 1px solid var(--color-primary);
   color: var(--color-primary);
 }
 
-.people-options button[data-active="true"] {
+.tab-options button[data-active="true"] {
   background-color: var(--color-primary);
   color: var(--color-background);
 }

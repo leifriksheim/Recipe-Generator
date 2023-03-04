@@ -100,7 +100,7 @@ function App() {
 
             <p>How many people are you making food for?</p>
 
-            <div className="people-options">
+            <div className="tab-options">
               {[...Array(5).keys()].map((num) => {
                 return (
                   <button
@@ -116,7 +116,7 @@ function App() {
 
             <p>How many minutes should it take?</p>
 
-            <div className="people-options">
+            <div className="tab-options">
               {[...Array(6).keys()].map((num) => {
                 const minutes = (num + 1) * 10;
 
