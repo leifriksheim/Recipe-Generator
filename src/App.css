@@ -5,13 +5,13 @@
 .App {
   max-width: 600px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0.5rem;
 }
 
 .data-options {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .select {
