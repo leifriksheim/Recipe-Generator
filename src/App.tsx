@@ -192,7 +192,7 @@ function App() {
               </button>
             </div>
 
-            <button className="submit" onClick={getRecipe}>
+            <button disabled={isLoading} className="submit" onClick={getRecipe}>
               {isLoading ? "Generating Recipe..." : "Generate Recipe"}
             </button>
           </div>
