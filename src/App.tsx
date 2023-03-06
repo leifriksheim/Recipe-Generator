@@ -5,21 +5,6 @@ import Select, { MultiValue } from "react-select";
 import "./App.css";
 import styles from "./data/styles";
 
-async function fetchRecipe(data: Data) {
-  const response = await fetch("/.netlify/functions/getRecipe", {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
-
-  const json = await response.json();
-
-  if (json.choices[0]) {
-    return json.choices[0].text;
-  } else {
-    ("<h1>Try again</h1>");
-  }
-}
-
 function App() {
   const [isLoading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -35,14 +20,33 @@ function App() {
   const [recipe, setRecipe] = useState("");
 
   async function getRecipe() {
-    try {
-      setLoading(true);
-      const res = await fetchRecipe(data);
-      setRecipe(res);
-    } catch (e) {
-      setRecipe("The AI is exhausted, let it chill a bit");
-    } finally {
-      setLoading(false);
+    const response = await fetch("/getRecipe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    console.log(response);
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    const body = response.body;
+    if (!body) {
+      return;
+    }
+    const reader = body.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+      setRecipe((prev) => prev + chunkValue);
     }
   }
 
