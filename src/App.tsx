@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Data } from "../types";
 import ingredients from "./data/ingredients";
 import Select, { MultiValue } from "react-select";
@@ -6,6 +6,7 @@ import "./App.css";
 import styles from "./data/styles";
 
 function App() {
+  const stopStream = useRef(false);
   const [isLoading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [data, setData] = useState<Data>({
@@ -20,6 +21,8 @@ function App() {
   const [recipe, setRecipe] = useState("");
 
   async function getRecipe() {
+    stopStream.current = false;
+
     const response = await fetch("/getRecipe", {
       method: "POST",
       headers: {
@@ -27,8 +30,6 @@ function App() {
       },
       body: JSON.stringify(data),
     });
-
-    console.log(response);
 
     if (!response.ok) {
       throw new Error(response.statusText);
@@ -43,10 +44,16 @@ function App() {
     let done = false;
 
     while (!done) {
-      const { value, done: doneReading } = await reader.read();
-      done = doneReading;
-      const chunkValue = decoder.decode(value);
-      setRecipe((prev) => prev + chunkValue);
+      if (stopStream.current) {
+        reader.cancel();
+        done = true;
+        setRecipe("");
+      } else {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+        setRecipe((prev) => prev + chunkValue);
+      }
     }
   }
 
@@ -74,6 +81,10 @@ function App() {
       ...data,
       ingredients: options.map((o) => ({ name: o.label, required: true })),
     });
+  }
+
+  function onTryAgain() {
+    stopStream.current = true;
   }
 
   return (
@@ -205,7 +216,7 @@ function App() {
 
       {recipe && (
         <div className="response-page">
-          <button className="back" onClick={() => setRecipe("")}>
+          <button className="back" onClick={onTryAgain}>
             Try again
           </button>
 
