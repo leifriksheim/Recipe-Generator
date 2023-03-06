@@ -4,7 +4,7 @@ import {
   ParsedEvent,
   ReconnectInterval,
 } from "https://esm.sh/eventsource-parser@0.1.0";
-import type { Config, Context } from "https://edge.netlify.com/";
+import type { Context } from "https://edge.netlify.com/";
 
 const API_KEY = Deno.env.get("OPENAI_API_KEY");
 
@@ -47,8 +47,6 @@ function generatePromt(data): string {
 const handler = async (req: Request, context: Context): Promise<Response> => {
   const data = await req.json();
 
-  console.log("api key is,", API_KEY);
-
   const stream = await OpenAIStream({
     model: "text-davinci-003",
     prompt: generatePromt(data),
@@ -86,8 +84,6 @@ async function OpenAIStream(payload) {
     body: JSON.stringify(payload),
   });
 
-  console.log(res);
-
   const stream = new ReadableStream({
     async start(controller) {
       function onParse(event: ParsedEvent | ReconnectInterval) {
@@ -120,8 +116,6 @@ async function OpenAIStream(payload) {
       }
     },
   });
-
-  console.log("stream", stream);
 
   return stream;
 }
