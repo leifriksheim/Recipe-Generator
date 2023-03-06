@@ -4,6 +4,7 @@
   font-weight: 400;
 
   --color-primary: #26b62e;
+  --color-primary-alpha: #26b62d18;
   --color-text: #60ad64;
   --color-background: #fafae7;
   --color-heading: var(--color-primary);

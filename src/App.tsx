@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Data } from "../types";
+import { Data, Ingredient } from "../types";
 import ingredients from "./data/ingredients";
 import Select, { MultiValue } from "react-select";
 import "./App.css";
@@ -57,30 +57,35 @@ function App() {
     }
   }
 
+  function addIngredient(value: string) {
+    const alreadyExist = data.ingredients.find((i) => i.name === value);
+
+    if (alreadyExist) return;
+
+    const newOption = value ? [{ name: value, required: true }] : [];
+
+    setData((oldData) => ({
+      ...oldData,
+      ingredients: [...oldData.ingredients, ...newOption],
+    }));
+  }
+
   function handleKeyDown(event: any) {
     if (event.keyCode === 13) {
-      const alreadyExist = data.ingredients.find((i) => i.name === inputValue);
+      const value = inputValue.split(",");
 
-      if (alreadyExist) return;
-
-      const newOption = inputValue
-        ? [{ name: inputValue, required: true }]
-        : [];
-
-      setData({
-        ...data,
-        ingredients: [...data.ingredients, ...newOption],
-      });
+      value.forEach(addIngredient);
 
       setInputValue("");
     }
   }
 
-  function handleChange(options: MultiValue<{ label: string; value: string }>) {
-    setData({
-      ...data,
-      ingredients: options.map((o) => ({ name: o.label, required: true })),
-    });
+  function removeIngredient(ingredient: Ingredient) {
+    const removedIngredients = data.ingredients.filter(
+      (i) => i.name !== ingredient.name
+    );
+
+    setData({ ...data, ingredients: removedIngredients });
   }
 
   function onTryAgain() {
@@ -91,25 +96,39 @@ function App() {
     <div className="App">
       {!recipe && (
         <div className="start-page">
-          <h1>Generate Recipes for Simple Meal Planning</h1>
+          <h1 className="title">FlavorFinder </h1>
+          <p className="tagline">
+            A small AI helper to generate recipes on the fly
+          </p>
 
           <div className="data-options">
-            <Select
-              placeholder="Add ingredients and press enter"
-              inputValue={inputValue}
-              value={data.ingredients.map((i) => ({
-                value: i.name,
-                label: i.name,
-              }))}
-              onInputChange={(val) => setInputValue(val)}
-              isMulti
-              options={ingredients}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
+            <label className="label" htmlFor="ingredients">
+              Write an ingredient and press enter:
+            </label>
+            <input
               name="ingredients"
-              className="select"
-              classNamePrefix="select"
-            />
+              className="input"
+              placeholder="Potatoes, bananas, milk...."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+            ></input>
+
+            {!!data.ingredients.length && (
+              <div className="tab-options">
+                {data.ingredients.map((ingredient) => (
+                  <div key={ingredient.name} className="tag">
+                    {ingredient.name}
+                    <button
+                      onClick={() => removeIngredient(ingredient)}
+                      className="tag-remove"
+                    >
+                      &#10005;
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <p className="label">What type of food do you want?</p>
 
@@ -117,6 +136,7 @@ function App() {
               {styles.map((style) => {
                 return (
                   <button
+                    className="tab"
                     data-active={style === data.style}
                     key={style}
                     onClick={() => setData({ ...data, style: style })}
@@ -131,18 +151,21 @@ function App() {
 
             <div className="tab-options">
               <button
+                className="tab"
                 data-active={data.type === "breakfast"}
                 onClick={() => setData({ ...data, type: "breakfast" })}
               >
                 Breakfast
               </button>
               <button
+                className="tab"
                 data-active={data.type === "lunch"}
                 onClick={() => setData({ ...data, type: "lunch" })}
               >
                 Lunch
               </button>
               <button
+                className="tab"
                 data-active={data.type === "dinner"}
                 onClick={() => setData({ ...data, type: "dinner" })}
               >
@@ -156,6 +179,7 @@ function App() {
               {[...Array(5).keys()].map((num) => {
                 return (
                   <button
+                    className="tab"
                     data-active={num + 1 === data.numPeople}
                     key={num + 1}
                     onClick={() => setData({ ...data, numPeople: num + 1 })}
@@ -174,6 +198,7 @@ function App() {
 
                 return (
                   <button
+                    className="tab"
                     data-active={minutes === data.minutes}
                     key={minutes * 5}
                     onClick={() => setData({ ...data, minutes })}
@@ -188,18 +213,21 @@ function App() {
 
             <div className="tab-options">
               <button
+                className="tab"
                 data-active={data.difficulty === "easy"}
                 onClick={() => setData({ ...data, difficulty: "easy" })}
               >
                 Easy
               </button>
               <button
+                className="tab"
                 data-active={data.difficulty === "medium"}
                 onClick={() => setData({ ...data, difficulty: "medium" })}
               >
                 Medium
               </button>
               <button
+                className="tab"
                 data-active={data.difficulty === "advanced"}
                 onClick={() => setData({ ...data, difficulty: "advanced" })}
               >
