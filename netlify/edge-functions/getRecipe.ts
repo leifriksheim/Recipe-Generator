@@ -10,7 +10,7 @@ const API_KEY = Deno.env.get("OPENAI_API_KEY");
 
 function generateIngredientPrompt(ingredients) {
   return `
-  The recipe should include the following ingredients: ${ingredients
+  Try to include these ingredients: ${ingredients
     .map((i) => (i.required ? i.name : i.name + " (optional)"))
     .join(", ")}.`;
 }
@@ -18,19 +18,16 @@ function generateIngredientPrompt(ingredients) {
 function generatePromt(data): string {
   return `
   
-  Hi ChatGPT, I have some data for a recipe that I'd like you to generate. 
-
-  I want to make ${data.type}.
-
-  The recipe should be for ${data.numPeople} people.
-
-  The recipe should be ${data.style} style.
-
-  The recipe should take around ${data.minutes} minutes to make.
-
-  The recipe should be of difficulty "${data.difficulty}"
-
+  Hi ChatGPT, I have some data for a recipe that I'd like you to generate.
+  
+  Type of meal: ${data.type}.
+  Region: ${data.style}.
+  Amount of people: ${data.numPeople}.
+  Cooking time: ${data.minutes}.
+  Difficulty: ${data.difficulty}.
   ${data.ingredients?.length ? generateIngredientPrompt(data.ingredients) : ""}
+
+  Use a name of a real dish.
   
   Respond only like this:
 
