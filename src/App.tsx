@@ -80,6 +80,13 @@ function App() {
     }
   }
 
+  function handleAddButtonClick() {
+    const value = inputValue.split(",");
+    value.forEach(addIngredient);
+    setInputValue("");
+    document.querySelector("input")?.focus();
+  }
+
   function removeIngredient(ingredient: Ingredient) {
     const removedIngredients = data.ingredients.filter(
       (i) => i.name !== ingredient.name
@@ -96,149 +103,171 @@ function App() {
     <div className="App">
       {!recipe && (
         <div className="start-page">
-          <h1 className="title">FlavorFinder </h1>
-          <p className="tagline">
-            A small AI helper to generate recipes on the fly
-          </p>
+          <div className="intro">
+            <h1 className="title">FlavorTown</h1>
+            <p className="tagline">
+              A small AI helper to generate recipes on the fly
+            </p>
+          </div>
 
           <div className="data-options">
-            <label className="label" htmlFor="ingredients">
-              Write an ingredient and press enter:
-            </label>
-            <input
-              name="ingredients"
-              className="input"
-              placeholder="Potatoes, bananas, milk...."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={handleKeyDown}
-            ></input>
-
-            {!!data.ingredients.length && (
-              <div className="tab-options">
-                {data.ingredients.map((ingredient) => (
-                  <div key={ingredient.name} className="tag">
-                    {ingredient.name}
-                    <button
-                      onClick={() => removeIngredient(ingredient)}
-                      className="tag-remove"
-                    >
-                      &#10005;
-                    </button>
-                  </div>
-                ))}
+            <div className="data-option">
+              <label className="label" htmlFor="ingredients">
+                Write an ingredient and press enter:
+              </label>
+              <div className="input-wrapper">
+                <input
+                  name="ingredients"
+                  className="input"
+                  placeholder="Potatoes, bananas, milk...."
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                ></input>
+                <button
+                  onClick={handleAddButtonClick}
+                  disabled={!inputValue}
+                  className="input-button"
+                >
+                  Add
+                </button>
               </div>
-            )}
-
-            <p className="label">What type of food do you want?</p>
-
-            <div className="tab-options">
-              {styles.map((style) => {
-                return (
-                  <button
-                    className="tab"
-                    data-active={style === data.style}
-                    key={style}
-                    onClick={() => setData({ ...data, style: style })}
-                  >
-                    {style}
-                  </button>
-                );
-              })}
+              {!!data.ingredients.length && (
+                <div className="tab-options">
+                  {data.ingredients.map((ingredient) => (
+                    <div key={ingredient.name} className="tag">
+                      {ingredient.name}
+                      <button
+                        onClick={() => removeIngredient(ingredient)}
+                        className="tag-remove"
+                      >
+                        &#10005;
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-            <p className="label">What type of meal is this?</p>
+            <div className="data-option">
+              <p className="label">What type of food do you want?</p>
 
-            <div className="tab-options">
-              <button
-                className="tab"
-                data-active={data.type === "breakfast"}
-                onClick={() => setData({ ...data, type: "breakfast" })}
-              >
-                Breakfast
-              </button>
-              <button
-                className="tab"
-                data-active={data.type === "lunch"}
-                onClick={() => setData({ ...data, type: "lunch" })}
-              >
-                Lunch
-              </button>
-              <button
-                className="tab"
-                data-active={data.type === "dinner"}
-                onClick={() => setData({ ...data, type: "dinner" })}
-              >
-                Dinner
-              </button>
+              <div className="tab-options">
+                {styles.map((style) => {
+                  return (
+                    <button
+                      className="tab"
+                      data-active={style === data.style}
+                      key={style}
+                      onClick={() => setData({ ...data, style: style })}
+                    >
+                      {style}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            <p className="label">How many people are you making food for?</p>
+            <div className="data-option">
+              <p className="label">What type of meal is this?</p>
 
-            <div className="tab-options">
-              {[...Array(5).keys()].map((num) => {
-                return (
-                  <button
-                    className="tab"
-                    data-active={num + 1 === data.numPeople}
-                    key={num + 1}
-                    onClick={() => setData({ ...data, numPeople: num + 1 })}
-                  >
-                    {num + 1}
-                  </button>
-                );
-              })}
+              <div className="tab-options">
+                <button
+                  className="tab"
+                  data-active={data.type === "breakfast"}
+                  onClick={() => setData({ ...data, type: "breakfast" })}
+                >
+                  Breakfast
+                </button>
+                <button
+                  className="tab"
+                  data-active={data.type === "lunch"}
+                  onClick={() => setData({ ...data, type: "lunch" })}
+                >
+                  Lunch
+                </button>
+                <button
+                  className="tab"
+                  data-active={data.type === "dinner"}
+                  onClick={() => setData({ ...data, type: "dinner" })}
+                >
+                  Dinner
+                </button>
+              </div>
             </div>
 
-            <p className="label">How many minutes should it take?</p>
+            <div className="data-option">
+              <p className="label">How many people are you making food for?</p>
 
-            <div className="tab-options">
-              {[...Array(6).keys()].map((num) => {
-                const minutes = (num + 1) * 10;
-
-                return (
-                  <button
-                    className="tab"
-                    data-active={minutes === data.minutes}
-                    key={minutes * 5}
-                    onClick={() => setData({ ...data, minutes })}
-                  >
-                    {minutes}
-                  </button>
-                );
-              })}
+              <div className="tab-options">
+                {[...Array(5).keys()].map((num) => {
+                  return (
+                    <button
+                      className="tab"
+                      data-active={num + 1 === data.numPeople}
+                      key={num + 1}
+                      onClick={() => setData({ ...data, numPeople: num + 1 })}
+                    >
+                      {num + 1}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            <p className="label">How difficult should it be?</p>
+            <div className="data-option">
+              <p className="label">How many minutes should it take?</p>
 
-            <div className="tab-options">
-              <button
-                className="tab"
-                data-active={data.difficulty === "easy"}
-                onClick={() => setData({ ...data, difficulty: "easy" })}
-              >
-                Easy
-              </button>
-              <button
-                className="tab"
-                data-active={data.difficulty === "medium"}
-                onClick={() => setData({ ...data, difficulty: "medium" })}
-              >
-                Medium
-              </button>
-              <button
-                className="tab"
-                data-active={data.difficulty === "advanced"}
-                onClick={() => setData({ ...data, difficulty: "advanced" })}
-              >
-                Advanced
-              </button>
+              <div className="tab-options">
+                {[...Array(6).keys()].map((num) => {
+                  const minutes = (num + 1) * 10;
+
+                  return (
+                    <button
+                      className="tab"
+                      data-active={minutes === data.minutes}
+                      key={minutes * 5}
+                      onClick={() => setData({ ...data, minutes })}
+                    >
+                      {minutes}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            <button disabled={isLoading} className="submit" onClick={getRecipe}>
-              {isLoading ? "Generating Recipe..." : "Generate Recipe"}
-            </button>
+            <div className="data-option">
+              <p className="label">How difficult should it be?</p>
+
+              <div className="tab-options">
+                <button
+                  className="tab"
+                  data-active={data.difficulty === "easy"}
+                  onClick={() => setData({ ...data, difficulty: "easy" })}
+                >
+                  Easy
+                </button>
+                <button
+                  className="tab"
+                  data-active={data.difficulty === "medium"}
+                  onClick={() => setData({ ...data, difficulty: "medium" })}
+                >
+                  Medium
+                </button>
+                <button
+                  className="tab"
+                  data-active={data.difficulty === "advanced"}
+                  onClick={() => setData({ ...data, difficulty: "advanced" })}
+                >
+                  Advanced
+                </button>
+              </div>
+            </div>
           </div>
+
+          <button disabled={isLoading} className="submit" onClick={getRecipe}>
+            {isLoading ? "Generating Recipe..." : "Generate Recipe"}
+          </button>
         </div>
       )}
 
