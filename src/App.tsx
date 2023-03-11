@@ -21,6 +21,7 @@ function App() {
   const [recipe, setRecipe] = useState("");
 
   async function getRecipe() {
+    console.log("get recipe");
     stopStream.current = false;
 
     const response = await fetch("/getRecipe", {
@@ -30,6 +31,8 @@ function App() {
       },
       body: JSON.stringify(data),
     });
+
+    console.log(response);
 
     if (!response.ok) {
       throw new Error(response.statusText);

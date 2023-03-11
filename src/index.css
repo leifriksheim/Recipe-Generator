@@ -6,6 +6,7 @@
   line-height: 1.5;
   font-weight: 400;
 
+  --color-gradient: linear-gradient(90deg, #20bb29, #3dd145);
   --color-primary: #26b62e;
   --color-primary-alpha: #dcf1dd;
   --color-text: #60ad64;
@@ -112,7 +113,7 @@ button {
   font-weight: 500;
   height: var(--button-height);
   font-family: inherit;
-  background-color: var(--color-primary);
+  background-color: var(--color-gradient);
   color: var(--color-background);
   cursor: pointer;
   transition: border-color 0.25s;
