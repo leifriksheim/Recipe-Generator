@@ -107,7 +107,7 @@ function App() {
       {!recipe && (
         <div className="start-page">
           <div className="intro">
-            <h1 className="title">FlavorTown</h1>
+            <h1 className="title">FlavourTown</h1>
             <p className="tagline">
               A small AI helper to generate recipes on the fly
             </p>

@@ -14,12 +14,24 @@
 }
 
 .title {
+  opacity: 0;
+  animation: fade-in 0.3s ease-in-out forwards;
+  animation-delay: 0.5s;
   margin: 0;
-  font-size: 3rem;
+  font-size: 3.7rem;
   background: var(--color-gradient);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.tagline {
+  opacity: 0;
+  animation: fade-in 0.3s ease-in-out forwards;
+  animation-delay: 0.5s;
+  margin: 0;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
 }
 
 @media (min-width: 800px) {
@@ -27,19 +39,19 @@
     margin: 0;
     font-size: 5rem;
   }
+  .tagline {
+    font-size: 1.4rem;
+  }
 }
 
 .intro {
   text-align: center;
 }
 
-.tagline {
-  margin: 0;
-  margin-bottom: 2rem;
-  font-size: 1.2rem;
-}
-
 .data-options {
+  opacity: 0;
+  animation: fade-in 0.3s ease-in-out forwards;
+  animation-delay: 0.5s;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
@@ -116,6 +128,9 @@
 }
 
 .submit {
+  opacity: 0;
+  animation: fade-in 0.3s ease-in-out forwards;
+  animation-delay: 0.5s;
   display: flex;
   align-items: center;
   justify-content: center;
