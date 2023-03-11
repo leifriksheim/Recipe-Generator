@@ -138,13 +138,12 @@ button {
   font-weight: 500;
   height: var(--button-height);
   font-family: inherit;
-  background-color: var(--color-gradient);
+  background: var(--color-gradient);
   color: var(--color-background);
   cursor: pointer;
-  transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--color-primary);
 }
 button:focus,
 button:focus-visible {

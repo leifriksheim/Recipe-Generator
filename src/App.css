@@ -95,6 +95,8 @@
 }
 
 .input-button {
+  transition: none;
+  background: var(--color-gradient);
   height: calc(100% - (0.8rem * 2));
   font-size: 0.8rem;
   position: absolute;
