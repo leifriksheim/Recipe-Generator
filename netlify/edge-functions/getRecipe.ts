@@ -45,7 +45,7 @@ const handler = async (req: Request, context: Context): Promise<Response> => {
   const data = await req.json();
 
   const stream = await OpenAIStream({
-    model: "gpt-3.5-turbo",
+    model: "text-davinci-003",
     prompt: generatePromt(data),
     temperature: 0.7,
     top_p: 1,
@@ -58,7 +58,7 @@ const handler = async (req: Request, context: Context): Promise<Response> => {
 
   return new Response(stream, {
     status: 200,
-    headers: { "Content-Type": "text/html" },
+    headers: { "Content-Type": "text/plain" },
   });
 };
 
@@ -80,6 +80,8 @@ async function OpenAIStream(payload) {
     method: "POST",
     body: JSON.stringify(payload),
   });
+
+  console.log(API_KEY);
 
   const stream = new ReadableStream({
     async start(controller) {

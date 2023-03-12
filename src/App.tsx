@@ -50,7 +50,6 @@ function App() {
       if (stopStream.current) {
         reader.cancel();
         done = true;
-        setRecipe("");
       } else {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
@@ -100,6 +99,7 @@ function App() {
 
   function onTryAgain() {
     stopStream.current = true;
+    setRecipe("");
   }
 
   return (
