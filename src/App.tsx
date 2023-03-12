@@ -21,41 +21,49 @@ function App() {
   const [recipe, setRecipe] = useState("");
 
   async function getRecipe() {
-    console.log("get recipe");
-    stopStream.current = false;
+    try {
+      stopStream.current = false;
 
-    const response = await fetch("/getRecipe", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+      setLoading(true);
 
-    console.log(response);
+      const response = await fetch("/getRecipe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    if (!response.ok) {
-      throw new Error(response.statusText);
-    }
+      setLoading(false);
 
-    const body = response.body;
-    if (!body) {
-      return;
-    }
-    const reader = body.getReader();
-    const decoder = new TextDecoder();
-    let done = false;
+      console.log(response);
 
-    while (!done) {
-      if (stopStream.current) {
-        reader.cancel();
-        done = true;
-      } else {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
-        setRecipe((prev) => prev + chunkValue);
+      if (!response.ok) {
+        throw new Error(response.statusText);
       }
+
+      const body = response.body;
+      if (!body) {
+        return;
+      }
+      const reader = body.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+
+      while (!done) {
+        if (stopStream.current) {
+          reader.cancel();
+          done = true;
+        } else {
+          const { value, done: doneReading } = await reader.read();
+          done = doneReading;
+          const chunkValue = decoder.decode(value);
+          setRecipe((prev) => prev + chunkValue);
+        }
+      }
+    } catch (e) {
+    } finally {
+      setLoading(false);
     }
   }
 
