@@ -13,6 +13,12 @@
   padding-right: 1rem;
 }
 
+.reponse-page {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .title {
   opacity: 0;
   animation: fade-in 0.3s ease-in-out forwards;
