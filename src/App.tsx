@@ -54,6 +54,7 @@ function App() {
         if (stopStream.current) {
           reader.cancel();
           done = true;
+          setRecipe("");
         } else {
           const { value, done: doneReading } = await reader.read();
           done = doneReading;
