@@ -8,6 +8,7 @@ import restrictions from "./data/dietaryRestrictions";
 
 function App() {
   const stopStream = useRef(false);
+  const [isLoadingImage, setIsLoadingImage] = useState(false);
   const [imgSrc, setImgSrc] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -24,20 +25,28 @@ function App() {
   const [recipe, setRecipe] = useState("");
 
   async function getImage() {
+    setIsLoadingImage(true);
+
     const title = document.querySelector(".response h1") as HTMLHeadingElement;
 
     if (title) {
-      console.log(title.innerText);
-      const res = await fetch("/getImage", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt: title.innerText }),
-      });
-      const json = await res.json();
-      setImgSrc(json?.data[0]?.url);
-      console.log(json);
+      try {
+        console.log(title.innerText);
+        const res = await fetch("/getImage", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt: title.innerText }),
+        });
+        const json = await res.json();
+        setImgSrc(json?.data[0]?.url);
+        console.log(json);
+      } finally {
+        setIsLoadingImage(false);
+      }
+    } else {
+      setIsLoadingImage(true);
     }
   }
 
@@ -343,14 +352,16 @@ function App() {
             </svg>
           </button>
 
-          <div className="image-wrapper">
-            {!imgSrc && (
-              <button className="image-button" onClick={getImage}>
-                Generate image
-              </button>
-            )}
-            {imgSrc && <img src={imgSrc}></img>}
-          </div>
+          {false && (
+            <div className="image-wrapper">
+              {!imgSrc && (
+                <button className="image-button" onClick={getImage}>
+                  Generate image
+                </button>
+              )}
+              {imgSrc && <img src={imgSrc}></img>}
+            </div>
+          )}
 
           <div
             className="response"

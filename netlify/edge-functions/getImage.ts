@@ -7,7 +7,7 @@ const handler = async (req: Request, context: Context) => {
   const data = await req.json();
 
   const options = {
-    prompt: data.prompt,
+    prompt: `${data.prompt} - delicious, photo, from top, bright colors, centered`,
     n: 1,
     size: "512x512",
   };

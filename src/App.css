@@ -4,8 +4,9 @@
 
 .App {
   display: grid;
-  place-content: center;
-  max-width: 1200px;
+  place-items: center;
+  width: 100%;
+  max-width: 1100px;
   min-height: 100vh;
   margin: 0 auto;
   padding-top: 2rem;
@@ -63,8 +64,9 @@
 }
 
 .image-wrapper img {
+  margin: 0 auto;
+  object-fit: contain;
   width: 100%;
-  object-fit: cover;
   height: 100%;
 }
 
