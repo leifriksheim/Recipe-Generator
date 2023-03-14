@@ -28,7 +28,7 @@
   animation: fade-in 0.3s ease-in-out forwards;
   animation-delay: 0.5s;
   margin: 0;
-  font-size: 3.7rem;
+  font-size: 2.9rem;
   background: var(--color-gradient);
   background-clip: text;
   -webkit-background-clip: text;
@@ -40,8 +40,9 @@
   animation: fade-in 0.3s ease-in-out forwards;
   animation-delay: 0.5s;
   margin: 0;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   font-size: 1.1rem;
+  line-height: 1;
 }
 
 @media (min-width: 800px) {
@@ -50,7 +51,8 @@
     font-size: 5rem;
   }
   .tagline {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
+    margin-bottom: 4rem;
   }
 }
 
@@ -78,6 +80,17 @@
   width: 100%;
   max-width: 100%;
   overflow: hidden;
+}
+
+.select {
+  font-size: inherit;
+  font-family: inherit;
+  color: var(--color-text);
+  height: var(--button-height);
+  padding: 0 2rem;
+  border-radius: 10px;
+  border: 2px solid var(--color-primary);
+  background: var(--color-background);
 }
 
 .label {
@@ -131,11 +144,13 @@
   color: var(--color-text);
 }
 
-.input:focus {
+.input:focus,
+.select:focus {
   background: var(--color-primary-alpha);
 }
 
-.input:hover {
+.input:hover,
+.select:hover {
   background: var(--color-primary-alpha);
 }
 
@@ -177,6 +192,12 @@
 
 .reponse {
   margin-top: 2rem;
+}
+
+.tab-options-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .tab-options {

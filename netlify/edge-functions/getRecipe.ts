@@ -20,8 +20,9 @@ function generatePromt(data): string {
   
   Hi ChatGPT, I have some data for a recipe that I'd like you to generate.
   
-  Type of meal: ${data.type}.
-  Region: ${data.style}.
+  Course: ${data.course}.
+  Cusine: ${data.cusine}.
+  Dietary restriction: ${data.restriction}.
   Amount of people: ${data.numPeople}.
   Cooking time: ${data.minutes}.
   Difficulty: ${data.difficulty}.
@@ -31,12 +32,12 @@ function generatePromt(data): string {
   
   Respond only like this:
 
-  <h1>Recipe title<h1>
+  <h1>Dish<h1>
 
-  <h2>Ingredients</h2>
+  <h2>Ingredients:</h2>
   <ul><li>Quantity and ingredient</li></ul>
 
-  <h2>Steps</h2>
+  <h2>Steps:</h2>
   <ol><li>Ingredient step</li><ol>
   `;
 }
@@ -86,8 +87,6 @@ async function OpenAIStream(payload) {
   const stream = new ReadableStream({
     async start(controller) {
       function onParse(event: ParsedEvent | ReconnectInterval) {
-        console.log("event", event);
-
         if (event.type === "event") {
           const data = event.data;
           if (data === "[DONE]") {

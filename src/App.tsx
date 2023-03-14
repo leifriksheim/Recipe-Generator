@@ -1,9 +1,10 @@
 import { useState, useRef } from "react";
 import { Data, Ingredient } from "../types";
-import ingredients from "./data/ingredients";
-import Select, { MultiValue } from "react-select";
+import Select from "react-select";
 import "./App.css";
-import styles from "./data/styles";
+import cusines from "./data/cusines";
+import courses from "./data/courses";
+import restrictions from "./data/dietaryRestrictions";
 
 function App() {
   const stopStream = useRef(false);
@@ -12,9 +13,10 @@ function App() {
   const [data, setData] = useState<Data>({
     minutes: 30,
     numPeople: 1,
-    type: "lunch",
-    style: "any",
-    difficulty: "easy",
+    course: "Any",
+    cusine: "Any",
+    restriction: "None",
+    difficulty: "Easy",
     ingredients: [],
   });
 
@@ -117,21 +119,19 @@ function App() {
         <div className="start-page">
           <div className="intro">
             <h1 className="title">FlavourTown</h1>
-            <p className="tagline">
-              A small AI helper to generate recipes on the fly
-            </p>
+            <p className="tagline">Generate recipes on the fly with AI</p>
           </div>
 
           <div className="data-options">
             <div className="data-option">
               <label className="label" htmlFor="ingredients">
-                Write an ingredient and press enter:
+                Do you want to use any specific ingredients? (optional)
               </label>
               <div className="input-wrapper">
                 <input
                   name="ingredients"
                   className="input"
-                  placeholder="Potatoes, bananas, milk...."
+                  placeholder="Write an ingredient and press enter..."
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -163,116 +163,139 @@ function App() {
 
             <div className="data-option">
               <p className="label">What type of food do you want?</p>
-
-              <div className="tab-options">
-                {styles.map((style) => {
-                  return (
-                    <button
-                      className="tab"
-                      data-active={style === data.style}
-                      key={style}
-                      onClick={() => setData({ ...data, style: style })}
-                    >
-                      {style}
-                    </button>
-                  );
-                })}
+              <div className="tab-options-wrapper">
+                <div className="tab-options">
+                  {cusines.map((cusine) => {
+                    return (
+                      <button
+                        className="tab"
+                        data-active={cusine === data.cusine}
+                        key={cusine}
+                        onClick={() => setData({ ...data, cusine: cusine })}
+                      >
+                        {cusine}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
             <div className="data-option">
-              <p className="label">What type of meal is this?</p>
+              <p className="label">Dietary restrictions?</p>
 
-              <div className="tab-options">
-                <button
-                  className="tab"
-                  data-active={data.type === "breakfast"}
-                  onClick={() => setData({ ...data, type: "breakfast" })}
-                >
-                  Breakfast
-                </button>
-                <button
-                  className="tab"
-                  data-active={data.type === "lunch"}
-                  onClick={() => setData({ ...data, type: "lunch" })}
-                >
-                  Lunch
-                </button>
-                <button
-                  className="tab"
-                  data-active={data.type === "dinner"}
-                  onClick={() => setData({ ...data, type: "dinner" })}
-                >
-                  Dinner
-                </button>
+              <div className="tab-options-wrapper">
+                <div className="tab-options">
+                  {restrictions.map((restriction) => {
+                    return (
+                      <button
+                        className="tab"
+                        data-active={restriction === data.restriction}
+                        key={restriction}
+                        onClick={() =>
+                          setData({ ...data, restriction: restriction })
+                        }
+                      >
+                        {restriction}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <div className="data-option">
+              <p className="label">What type of course is this?</p>
+
+              <div className="tab-options-wrapper">
+                <div className="tab-options">
+                  {courses.map((course) => {
+                    return (
+                      <button
+                        className="tab"
+                        data-active={course === data.course}
+                        key={course}
+                        onClick={() => setData({ ...data, course: course })}
+                      >
+                        {course}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
             <div className="data-option">
               <p className="label">How many people are you making food for?</p>
 
-              <div className="tab-options">
-                {[...Array(5).keys()].map((num) => {
-                  return (
-                    <button
-                      className="tab"
-                      data-active={num + 1 === data.numPeople}
-                      key={num + 1}
-                      onClick={() => setData({ ...data, numPeople: num + 1 })}
-                    >
-                      {num + 1}
-                    </button>
-                  );
-                })}
+              <div className="tab-options-wrapper">
+                <div className="tab-options">
+                  {[...Array(5).keys()].map((num) => {
+                    return (
+                      <button
+                        className="tab"
+                        data-active={num + 1 === data.numPeople}
+                        key={num + 1}
+                        onClick={() => setData({ ...data, numPeople: num + 1 })}
+                      >
+                        {num + 1}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
             <div className="data-option">
               <p className="label">How many minutes should it take?</p>
 
-              <div className="tab-options">
-                {[...Array(6).keys()].map((num) => {
-                  const minutes = (num + 1) * 10;
+              <div className="tab-options-wrapper">
+                <div className="tab-options">
+                  {[...Array(6).keys()].map((num) => {
+                    const minutes = (num + 1) * 10;
 
-                  return (
-                    <button
-                      className="tab"
-                      data-active={minutes === data.minutes}
-                      key={minutes * 5}
-                      onClick={() => setData({ ...data, minutes })}
-                    >
-                      {minutes}
-                    </button>
-                  );
-                })}
+                    return (
+                      <button
+                        className="tab"
+                        data-active={minutes === data.minutes}
+                        key={minutes * 5}
+                        onClick={() => setData({ ...data, minutes })}
+                      >
+                        {minutes}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
             <div className="data-option">
               <p className="label">How difficult should it be?</p>
 
-              <div className="tab-options">
-                <button
-                  className="tab"
-                  data-active={data.difficulty === "easy"}
-                  onClick={() => setData({ ...data, difficulty: "easy" })}
-                >
-                  Easy
-                </button>
-                <button
-                  className="tab"
-                  data-active={data.difficulty === "medium"}
-                  onClick={() => setData({ ...data, difficulty: "medium" })}
-                >
-                  Medium
-                </button>
-                <button
-                  className="tab"
-                  data-active={data.difficulty === "advanced"}
-                  onClick={() => setData({ ...data, difficulty: "advanced" })}
-                >
-                  Advanced
-                </button>
+              <div className="tab-options-wrapper">
+                <div className="tab-options">
+                  <button
+                    className="tab"
+                    data-active={data.difficulty === "Easy"}
+                    onClick={() => setData({ ...data, difficulty: "Easy" })}
+                  >
+                    Easy
+                  </button>
+                  <button
+                    className="tab"
+                    data-active={data.difficulty === "Medium"}
+                    onClick={() => setData({ ...data, difficulty: "Medium" })}
+                  >
+                    Medium
+                  </button>
+                  <button
+                    className="tab"
+                    data-active={data.difficulty === "Advanced"}
+                    onClick={() => setData({ ...data, difficulty: "Advanced" })}
+                  >
+                    Advanced
+                  </button>
+                </div>
               </div>
             </div>
           </div>
