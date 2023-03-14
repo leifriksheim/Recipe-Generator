@@ -8,6 +8,7 @@ import restrictions from "./data/dietaryRestrictions";
 
 function App() {
   const stopStream = useRef(false);
+  const [imgSrc, setImgSrc] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [data, setData] = useState<Data>({
@@ -21,6 +22,24 @@ function App() {
   });
 
   const [recipe, setRecipe] = useState("");
+
+  async function getImage() {
+    const title = document.querySelector(".response h1") as HTMLHeadingElement;
+
+    if (title) {
+      console.log(title.innerText);
+      const res = await fetch("/getImage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: title.innerText }),
+      });
+      const json = await res.json();
+      setImgSrc(json?.data[0]?.url);
+      console.log(json);
+    }
+  }
 
   async function getRecipe() {
     try {
@@ -111,6 +130,7 @@ function App() {
   function onTryAgain() {
     stopStream.current = true;
     setRecipe("");
+    setImgSrc("");
   }
 
   return (
@@ -309,8 +329,28 @@ function App() {
       {recipe && (
         <div className="response-page">
           <button className="back" onClick={onTryAgain}>
-            Try again
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+              />
+            </svg>
           </button>
+
+          <div className="image-wrapper">
+            {!imgSrc && (
+              <button className="image-button" onClick={getImage}>
+                Generate image
+              </button>
+            )}
+            {imgSrc && <img src={imgSrc}></img>}
+          </div>
 
           <div
             className="response"

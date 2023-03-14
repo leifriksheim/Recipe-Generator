@@ -32,13 +32,17 @@ function generatePromt(data): string {
   
   Respond only like this:
 
-  <h1>Dish<h1>
+  <h1>Dish</h1>
 
-  <h2>Ingredients:</h2>
-  <ul><li>Quantity and ingredient</li></ul>
+  <div class="ingredients">
+    <h2>Ingredients:</h2>
+    <ul><li>Quantity and ingredient</li></ul>
+  </div>
 
-  <h2>Steps:</h2>
-  <ol><li>Ingredient step</li><ol>
+  <div class="steps">
+    <h2>Steps:</h2>
+    <ol><li>Ingredient step</li><ol>
+  </div>
   `;
 }
 
