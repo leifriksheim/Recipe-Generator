@@ -17,7 +17,6 @@ function generateIngredientPrompt(ingredients) {
 
 function generatePromt(data): string {
   return `
-  
   Hi ChatGPT, I have some data for a recipe that I'd like you to generate.
   
   Course: ${data.course}.
@@ -40,8 +39,8 @@ function generatePromt(data): string {
   </div>
 
   <div class="steps">
-    <h2>Steps:</h2>
-    <ol><li>Ingredient step</li><ol>
+    <h2>Instructions:</h2>
+    <ol><li>Instruction step</li><ol>
   </div>
   `;
 }
