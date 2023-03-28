@@ -49,7 +49,7 @@ const handler = async (req: Request, context: Context): Promise<Response> => {
   const data = await req.json();
 
   const stream = await OpenAIStream({
-    model: "text-davinci-003",
+    model: "gpt-4",
     prompt: generatePromt(data),
     temperature: 0.7,
     top_p: 1,
